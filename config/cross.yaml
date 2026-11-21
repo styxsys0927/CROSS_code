@@ -1,0 +1,45 @@
+model:
+  name: "CROSS"
+
+  # Main token path: split each EEG trial into non-overlapping 50-sample
+  # temporal tokens.  These tokens preserve local temporal dynamics before
+  # scale-aware reasoning.
+  segment_length: 50
+  token_stride: 50
+
+  # Spatial residual branch: build a companion token from a wider temporal
+  # window, then fuse it with the main CROSS token branch.  This is the full
+  # model setting used in the main comparison.
+  spatial_token_window: 100
+
+  # Multi-scale context windows used by SARL/SNSM to compare local temporal
+  # neighborhoods at different scales.
+  context_window_size: [3, 5, 7]
+
+  # Transformer/global-inference capacity.
+  d_model: 256
+  nhead: 8
+  num_layers: 2
+  dim_feedforward: 256
+  dropout_rate: 0.5
+
+  # Pre-fusion attention between scale-specific token features.
+  prefusion_attention_dim: 64
+  prefusion_attention_heads: 4
+  prefusion_ffn_dim: 128
+
+  # Lightweight saliency/gating and token frontend.
+  scale_gate_hidden: 4
+  token_temporal_filters: 16
+  token_depth_multiplier: 2
+  token_temporal_kernel: 31
+  token_refinement_kernel: 7
+
+train:
+  epochs: 100
+  batch_size: 128
+  lr: 0.0005
+  norm: Z_Score
+  seed: 0
+  optimizer: "adam"
+  weight_decay: 0.005

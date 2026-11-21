@@ -1,0 +1,11 @@
+data/
+log/
+weight/
+cache/
+__pycache__/
+*.py[cod]
+*.pth
+*.pt
+*.ckpt
+*.log
+.DS_Store
